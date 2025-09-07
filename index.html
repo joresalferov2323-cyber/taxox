@@ -1,36 +1,41 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
   <meta charset="UTF-8" />
   <title>Вебкамера</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flv.js@1.6.2/dist/flv.min.js"></script>
   <style>
-    body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    video { width: 100%; height: auto; max-width: 640px; }
+    body {
+      margin: 0; 
+      background: #000; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh;
+    }
+    video {
+      width: 100%; 
+      max-width: 640px; 
+      height: auto; 
+      background: #000;
+    }
   </style>
 </head>
 <body>
-  <video id="video" controls autoplay muted></video>
+  <video id="camera" controls autoplay muted></video>
 
   <script>
-    var video = document.getElementById('video');
-    var videoSrc = 'https://140868.edgevideo.ru/streams/140868_917813/index.m3u8';
-
-    if(Hls.isSupported()) {
-      var hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED,function() {
-        video.play();
+    if (flvjs.isSupported()) {
+      var videoElement = document.getElementById('camera');
+      var flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: 'http://85.173.234.244:9000/rtsp/23606289/c496f32f37858535ac1d'
       });
-    }
-    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata',function() {
-        video.play();
-      });
+      flvPlayer.attachMediaElement(videoElement);
+      flvPlayer.load();
+      flvPlayer.play();
     } else {
-      alert('Ваш браузер не поддерживает воспроизведение этого видео');
+      alert('Ваш браузер не поддерживает FLV');
     }
   </script>
 </body>
