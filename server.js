@@ -7,9 +7,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-app.get('/proxy', (req, res) => {
-  const targetUrl = 'http://85.173.234.243/site/embed.html?id=5517&html5';
-  req.pipe(request(targetUrl)).pipe(res);
+// Проксируем поток FLV
+app.get('/flvstream', (req, res) => {
+  const streamUrl = 'http://85.173.234.244:9000/rtsp/23606289/c496f32f37858535ac1d';
+  req.pipe(request(streamUrl)).pipe(res);
 });
 
 app.listen(PORT, () => {
